@@ -1,8 +1,11 @@
 <script setup lang="ts">
 
 const history = ref<string[]>([])
-const { status, send, close } = useWebSocket(`ws://${location.host}/api/websocket`, {
+const { status, send, close } = useWebSocket(`${location.protocol.startsWith('https') ? 'wss' : 'ws'}://${location.host}/api/websocket`, {
   autoReconnect: true,
+  heartbeat: {
+    interval: 2000,
+  },
   onConnected(ws) {
     console.log('onConnected')
   },
@@ -13,15 +16,23 @@ const { status, send, close } = useWebSocket(`ws://${location.host}/api/websocke
     console.log('onError', event.timeStamp)
   },
   onMessage(ws, event) {
-    console.log('onMessage', event.data)
-    history.value.push(event.data)
-  },
+    getMsg(event.data)
+  }
 })
 
 const msg = ref('')
 function sendMsg() {
   send(msg.value)
   msg.value = ''
+}
+async function getMsg(data: any) {
+  if (data instanceof Blob) {
+    return
+    // const ff = JSON.parse(await data.text())
+    // ff.message == 'pong'
+  }
+  console.log('onMessage', data)
+  history.value.push(data)
 }
 </script>
 

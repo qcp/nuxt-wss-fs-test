@@ -11,6 +11,10 @@ export default defineWebSocketHandler({
     console.log('error', peer.id, error)
   },
   message(peer, message) {
+    if (message.text().includes("ping")) {
+      peer.send({ user: "server", message: "pong" })
+      return
+    }
     console.log('message', peer.id, message)
     peer.publish('room-name', message.text())
   }

@@ -1,4 +1,0 @@
-
-<template>
-  <Ws></Ws>
-</template>

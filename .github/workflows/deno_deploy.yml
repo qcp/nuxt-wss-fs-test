@@ -17,7 +17,7 @@ jobs:
       - run: corepack enable
       - uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
           cache: npm
       - run: npm install
       - run: npm run build
@@ -26,6 +26,6 @@ jobs:
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
         with:
-          project: dmitriygrid-nuxt-wss-fs-50
+          project: qcp
           entrypoint: server/index.ts
           root: .output

@@ -16,8 +16,8 @@ const prepareMessage = (message: Record<string, unknown>) => JSON.stringify(mess
 
 export default defineWebSocketHandler({
   open: async (peer: Peer) => {
-    console.error(peer.id)
-    console.error(peer.websocket.url)
+    console.error(typeof peer)
+    console.error(Object.keys(peer))
     try {
       const roomId = getRoomId(peer.request?.url)
       const room = await manager.init(roomId)
